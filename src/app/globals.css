@@ -2,26 +2,140 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
+  background-image: url('/nick-fewings-fIEywSUhwFU-unsplash.jpg'); /* Add your background image path here */
+  background-size: cover;
+  color: rgba(17, 3, 1, 0.918);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.meme-generator {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+}
+
+.title {
+  font-size: 2em; /* Bigger font size for the title */
+  font-weight: bold; /* Bold text */
+  color: white; /* Make title white */
+}
+
+.selector-title {
+  color: white; /* Change color of the select template title */
+  font-weight: bold; /* Make title bold */
+  margin-bottom: 10px; /* Add some margin for spacing */
+}
+
+.template-selector {
+  margin: 20px 0;
+}
+
+.template-selector select {
+  padding: 10px; /* Better padding for the select box */
+  border-radius: 5px;
+  border: none;
+  background-color: white; /* Select box background */
+  color: black; /* Text color in select box */
+  font-size: 1em; /* Larger font size */
+}
+
+.text-inputs {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-inputs input {
+  margin: 10px 0; /* Vertical spacing */
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: white; /* Input background */
+  color: black; /* Text color in input */
+  font-size: 1em; /* Increase font size for inputs */
+}
+
+.meme-preview {
+  margin: 20px 0;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.preview-image {
+  width: 100%; /* Make the meme preview responsive */
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Styling for the Download Meme button */
+button {
+  background-color: #1a1a1a; /* Dark background for better visibility */
+  color: white; /* White text color */
+  font-weight: bold; /* Make the text bold */
+  padding: 10px 20px; /* Add some padding for better size */
+  border: none; /* Remove borders */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Show pointer on hover */
+  margin: 10px 0; /* Add margin for spacing */
+  transition: background-color 0.3s ease; /* Add smooth transition */
+}
+
+button:hover {
+  background-color: #333; /* Darken the button on hover */
+}
+
+
+footer {
+  margin-top: 20px;
+  font-size: 1em; /* Increase footer font size */
+  color: white; /* Make footer text white */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .meme-generator {
+    padding: 20px; /* Reduce padding for smaller screens */
+  }
+
+  .title {
+    font-size: 1.8em; /* Adjust heading size */
+  }
+
+  .selector-title {
+    font-size: 1.5em; /* Adjust selector title size */
+  }
+
+  footer {
+    font-size: 0.9em; /* Reduce footer font size */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5em; /* Further adjust heading size for mobile */
+  }
+
+  .selector-title {
+    font-size: 1.3em; /* Further adjust selector title size for mobile */
+  }
+
+  footer {
+    font-size: 0.8em; /* Further reduce footer font size */
   }
 }

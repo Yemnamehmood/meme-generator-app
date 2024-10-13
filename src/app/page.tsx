@@ -1,101 +1,112 @@
-import Image from "next/image";
+'use client'
+import { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+const memeTemplates = [
+    // Blank Templates
+    '/5cwx89t4-1389586191.avif',  // Blank template 1
+    '/p09j7x4c.jpg.webp',  // Blank template 2
+    '/xirbx1rd1p171.webp',  // Blank template 3
+
+    // Pre-Written Text Templates
+    '/967m9b.jpg',  // Pre-written template 1
+    '/96gfv0.jpg',  // Pre-written template 2
+    '/967p6c.jpg',  // Pre-written template 3
+];
+
+const MemeGenerator = () => {
+    const [selectedTemplate, setSelectedTemplate] = useState('');
+    const [topText, setTopText] = useState('');
+    const [bottomText, setBottomText] = useState('');
+    const memeRef = useRef<HTMLDivElement>(null);
+
+    // Handle template change
+    const handleTemplateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedTemplate(event.target.value);
+    };
+
+    // Download meme functionality
+    const handleDownload = () => {
+        if (memeRef.current) {
+            html2canvas(memeRef.current).then(canvas => {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'meme.png';
+                link.click();
+            });
+        }
+    };
+
+    return (
+        <div className="meme-generator">
+            <h1 className="title">Meme Generator</h1>
+            <div className="template-selector">
+                <h2 className="selector-title">Select a Meme Template</h2>
+                <select onChange={handleTemplateChange} className="template-select">
+                    <option value="" disabled selected>Select your option</option>
+                    {memeTemplates.map((template, index) => (
+                        <option key={index} value={template}>
+                            {template.includes('.avif') ? `Blank Template ${index + 1}` : `Pre-Written Meme ${index - 2}`}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div className="meme-preview">
+                {selectedTemplate && (
+                    <div ref={memeRef} className="meme-container" style={{ position: 'relative', display: 'inline-block' }}>
+                        <img src={selectedTemplate} alt="Meme Preview" className="preview-image" />
+                        <div style={{
+                            position: 'absolute',
+                            top: '10px',
+                            width: '100%',
+                            textAlign: 'center',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            fontSize: '1.5em',
+                            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
+                        }}>
+                            {topText}
+                        </div>
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '10px',
+                            width: '100%',
+                            textAlign: 'center',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            fontSize: '1.5em',
+                            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
+                        }}>
+                            {bottomText}
+                        </div>
+                    </div>
+                )}
+
+                <div className="text-inputs">
+                    <input
+                        type="text"
+                        placeholder="Top Text"
+                        value={topText}
+                        onChange={(e) => setTopText(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Bottom Text"
+                        value={bottomText}
+                        onChange={(e) => setBottomText(e.target.value)}
+                    />
+                </div>
+
+                <button onClick={handleDownload} className="download-btn">Download Meme</button>
+            </div>
+
+            <footer>
+                <p>&copy; All rights reserved. Meme Generator by Yemna Mehmood</p>
+            </footer>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+    );
+};
+
+export default MemeGenerator;
